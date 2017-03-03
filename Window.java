@@ -1,11 +1,8 @@
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.JPanel;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 import java.awt.*;
-import java.awt.Graphics;
-import java.awt.Color;
+import java.awt.MouseInfo;
 import java.awt.event.ActionListener;
 import java.awt.event.*;
 import java.io.*;
@@ -19,34 +16,30 @@ public class Window extends JFrame implements KeyListener
 	{
 		if(e.getKeyCode() == KeyEvent.VK_UP)
 		{
-			System.out.println("up");
 			y = y - 35;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
-			System.out.println("right");
 			x = x + 35;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_LEFT)
 		{
 			x = x - 35;
-			System.out.println("left");
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
 			y = y + 35;
-			System.out.println("down");
 		}
 		if(e.getKeyCode() == KeyEvent.VK_SPACE)
 		{ 
-			System.out.println("LAZER");
 			System.out.println(lazerList.size());
-			lazerList.add(new Lazer(x+188, y+45));
+			System.out.println(asteroidList.size());
+			lazerList.add(new Lazer(x+175, y+30));
 		}
 		if(e.getKeyCode() == KeyEvent.VK_NUMPAD4)
 		{
 			System.out.println("ASTEROID");
-			asteroidList.add(new Asteroid(r.nextInt(750)+750,r.nextInt(1000), new StringBuilder(randomString(r.nextInt(4)+1))));
+			asteroidList.add(new Asteroid(r.nextInt((width/2))+(width/2),r.nextInt(height - 125), new StringBuilder(randomString(r.nextInt(4)+1))));
 		}
 	}
 	//randomString(r.nextInt(4 + 1)
@@ -86,7 +79,8 @@ public class Window extends JFrame implements KeyListener
 	ArrayList<Lazer> lazerList = new ArrayList<Lazer>();
 	ArrayList<Asteroid> asteroidList = new ArrayList<Asteroid>();
 	
-	int speed = 10;
+	int asteroidSpeed = 2;
+	int lazerSpeed = 10;
 	Image ship;
 	Image asteroid;
 	JPanel panel;
@@ -138,7 +132,9 @@ public class Window extends JFrame implements KeyListener
 
 		}
     }
-
+    // asteroid = 121 121
+    // laser = 87 28
+    // ship = 188 x 91
     public void initPanel()
     {
     	panel = new JPanel()
@@ -146,19 +142,37 @@ public class Window extends JFrame implements KeyListener
     		@Override
     		protected void paintComponent(Graphics g)
     		{
-    			if(x < 1500 && y < 1125 && x >= 0 && y >= 0)
+    			if(x < width && y < height && x >= 0 && y >= 0)
     			{	
     				g.drawImage(bg, 0, 0, null);
+    				//x = MouseInfo.getPointerInfo().getLocation().x;
+    				//y = MouseInfo.getPointerInfo().getLocation().y;
     				g.drawImage(ship, x, y, null);
     				if(lazerList.size() != 0)
     				{
     					for(int i = 0; i < lazerList.size(); i++)
     					{
-    						lazerList.get(i).x = lazerList.get(i).x + speed;
-    						g.drawImage(lazerList.get(i).img, lazerList.get(i).x, lazerList.get(i).y, null);
-    						if(lazerList.get(i).x > 1500)
+    						lazerList.get(i).x = lazerList.get(i).x + lazerSpeed;
+    						g.drawImage(lazer, lazerList.get(i).x, lazerList.get(i).y, null);
+    						for(int j = 0; j < asteroidList.size(); j++)
     						{
-    							lazerList.remove(i);
+    							if(lazerList.get(i).x + 87 > asteroidList.get(j).x && lazerList.get(i).x + 87 < asteroidList.get(j).x + 121 && lazerList.get(i).y + 28 > asteroidList.get(j).y && lazerList.get(i).y + 28 < asteroidList.get(j).y + 121)
+    							{
+    								lazerList.remove(i);
+    								asteroidList.remove(j);
+    								break;
+    							}
+    						}
+    						if(i == lazerList.size())
+    						{
+
+    						}
+    						else if(i < lazerList.size())
+    						{
+	    						if(lazerList.get(i).x > width - 50)
+	    						{
+	    							lazerList.remove(i);
+	    						}
     						}
 
     					}
@@ -169,38 +183,38 @@ public class Window extends JFrame implements KeyListener
     					{
     						if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ur").toString()))
     						{
-    							asteroidList.get(i).x = asteroidList.get(i).x + 2;
-    							asteroidList.get(i).y = asteroidList.get(i).y - 2;
+    							asteroidList.get(i).x = asteroidList.get(i).x + asteroidSpeed;
+    							asteroidList.get(i).y = asteroidList.get(i).y - asteroidSpeed;
     						}
     						else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ul").toString()))
     						{
-    							asteroidList.get(i).x = asteroidList.get(i).x - 2;
-    							asteroidList.get(i).y = asteroidList.get(i).y - 2;
+    							asteroidList.get(i).x = asteroidList.get(i).x - asteroidSpeed;
+    							asteroidList.get(i).y = asteroidList.get(i).y - asteroidSpeed;
     						}
     						else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("dr").toString()))
     						{
-    							asteroidList.get(i).x = asteroidList.get(i).x + 2;
-    							asteroidList.get(i).y = asteroidList.get(i).y + 2;
+    							asteroidList.get(i).x = asteroidList.get(i).x + asteroidSpeed;
+    							asteroidList.get(i).y = asteroidList.get(i).y + asteroidSpeed;
     						}
     						else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("dl").toString()))
     						{
-    							asteroidList.get(i).x = asteroidList.get(i).x - 2;
-    							asteroidList.get(i).y = asteroidList.get(i).y + 2;
+    							asteroidList.get(i).x = asteroidList.get(i).x - asteroidSpeed;
+    							asteroidList.get(i).y = asteroidList.get(i).y + asteroidSpeed;
     						}
-    						g.drawImage(asteroidList.get(i).img, asteroidList.get(i).x, asteroidList.get(i).y, null);
-    						if(asteroidList.get(i).x > 1379)
+    						g.drawImage(asteroid, asteroidList.get(i).x, asteroidList.get(i).y, null);
+    						if(asteroidList.get(i).x > width - 122)
     						{
     							asteroidList.get(i).direction.setCharAt(1, 'l');
     						}
-    						else if(asteroidList.get(i).x < 0)
+    						if(asteroidList.get(i).x < 0)
     						{
     							asteroidList.get(i).direction.setCharAt(1, 'r');
     						}
-    						else if(asteroidList.get(i).y > 1004)
+    						if(asteroidList.get(i).y > height - 122)
     						{
     							asteroidList.get(i).direction.setCharAt(0, 'u');
     						}
-    						else if(asteroidList.get(i).y < 0)
+    						if(asteroidList.get(i).y < 0)
     						{
     							asteroidList.get(i).direction.setCharAt(0, 'd');
     						}
@@ -209,14 +223,12 @@ public class Window extends JFrame implements KeyListener
     				
     			}
     		}
-
     	};
     }
     class Lazer
     {
     	int x;
     	int y;
-    	Image img = lazer;
     	public Lazer(int p_x, int p_y)
     	{
     		x = p_x;
@@ -227,10 +239,7 @@ public class Window extends JFrame implements KeyListener
     {
     	int x;
     	int y;
-    	Image img = asteroid;
     	StringBuilder direction;
-    	int speedUp;
-    	int speedRight;
     	public Asteroid(int p_x, int p_y, StringBuilder p_direction)
     	{
     		x = p_x;
