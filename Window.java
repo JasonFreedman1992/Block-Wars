@@ -46,10 +46,33 @@ public class Window extends JFrame implements KeyListener
 		if(e.getKeyCode() == KeyEvent.VK_NUMPAD4)
 		{
 			System.out.println("ASTEROID");
-			asteroidList.add(new Asteroid(r.nextInt(750)+750,r.nextInt(1000)));
+			asteroidList.add(new Asteroid(r.nextInt(750)+750,r.nextInt(1000), new StringBuilder(randomString(r.nextInt(4)+1))));
 		}
 	}
-
+	//randomString(r.nextInt(4 + 1)
+	StringBuilder randomString(int p_int)
+	{
+		if(p_int == 1)
+		{
+			return new StringBuilder("ur");
+		}
+		else if(p_int == 2)
+		{
+			return new StringBuilder("ul");
+		}
+		else if(p_int == 3)
+		{
+			return new StringBuilder("dr");
+		}
+		else if(p_int == 4)
+		{
+			return new StringBuilder("dl");
+		}
+		else
+		{
+			return new StringBuilder("ur");
+		}
+	}
 
 	public void keyReleased(KeyEvent e)
 	{
@@ -74,6 +97,7 @@ public class Window extends JFrame implements KeyListener
 	int y;
 	int height;
 	int width;
+
 	Timer timer = new Timer(10, new ActionListener()
 	{
 		public void actionPerformed(ActionEvent e)
@@ -84,6 +108,7 @@ public class Window extends JFrame implements KeyListener
         	panel.setSize(width, height);
 		}
 	});
+
 	public void init(int p_width, int p_height)
     {
         setTitle("Freeza Chess");
@@ -142,10 +167,42 @@ public class Window extends JFrame implements KeyListener
     				{
     					for(int i = 0; i < asteroidList.size(); i++)
     					{
-    						g.drawImage(asteroidList.get(i).img, asteroidList.get(i).x, asteroidList.get(i).y, null);
-    						if(asteroidList.get(i).x > 1500)
+    						if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ur").toString()))
     						{
-
+    							asteroidList.get(i).x = asteroidList.get(i).x + 2;
+    							asteroidList.get(i).y = asteroidList.get(i).y - 2;
+    						}
+    						else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ul").toString()))
+    						{
+    							asteroidList.get(i).x = asteroidList.get(i).x - 2;
+    							asteroidList.get(i).y = asteroidList.get(i).y - 2;
+    						}
+    						else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("dr").toString()))
+    						{
+    							asteroidList.get(i).x = asteroidList.get(i).x + 2;
+    							asteroidList.get(i).y = asteroidList.get(i).y + 2;
+    						}
+    						else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("dl").toString()))
+    						{
+    							asteroidList.get(i).x = asteroidList.get(i).x - 2;
+    							asteroidList.get(i).y = asteroidList.get(i).y + 2;
+    						}
+    						g.drawImage(asteroidList.get(i).img, asteroidList.get(i).x, asteroidList.get(i).y, null);
+    						if(asteroidList.get(i).x > 1379)
+    						{
+    							asteroidList.get(i).direction.setCharAt(1, 'l');
+    						}
+    						else if(asteroidList.get(i).x < 0)
+    						{
+    							asteroidList.get(i).direction.setCharAt(1, 'r');
+    						}
+    						else if(asteroidList.get(i).y > 1004)
+    						{
+    							asteroidList.get(i).direction.setCharAt(0, 'u');
+    						}
+    						else if(asteroidList.get(i).y < 0)
+    						{
+    							asteroidList.get(i).direction.setCharAt(0, 'd');
     						}
     					}
     				}
@@ -154,10 +211,6 @@ public class Window extends JFrame implements KeyListener
     		}
 
     	};
-    }
-    void initObjects()
-    {
-
     }
     class Lazer
     {
@@ -175,13 +228,14 @@ public class Window extends JFrame implements KeyListener
     	int x;
     	int y;
     	Image img = asteroid;
-    	String direction;
+    	StringBuilder direction;
     	int speedUp;
     	int speedRight;
-    	public Asteroid(int p_x, int p_y)
+    	public Asteroid(int p_x, int p_y, StringBuilder p_direction)
     	{
     		x = p_x;
     		y = p_y;
+    		direction = p_direction;
     	}
     }
 }
