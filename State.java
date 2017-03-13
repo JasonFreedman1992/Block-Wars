@@ -8,7 +8,8 @@ public class State
 	static ArrayList<Asteroid> asteroidList = new ArrayList<Asteroid>();
 	static int asteroidSpeed = 2;
 	static int lazerSpeed = 10;
-
+	public static int width;
+	public static int height;
 	public static boolean up;
 	public static boolean right;
 	public static boolean left;
@@ -35,7 +36,73 @@ public class State
 		}
 		if(lazerShoot)
 		{
-			lazerList.add(new Lazer(ship.x+175, ship.y+30));
+			lazerList.add(new Lazer(ship.x + 75, ship.y - 12));
 		}
+        if(!lazerList.isEmpty())
+        {
+            for(int i = 0; i < lazerList.size(); i++)
+            {
+                lazerList.get(i).x = lazerList.get(i).x + lazerSpeed;
+                
+                for(int j = 0; j < asteroidList.size(); j++)
+                {
+                    if(lazerList.get(i).x + 87 > asteroidList.get(j).x && lazerList.get(i).x + 87 < asteroidList.get(j).x + 121 && lazerList.get(i).y + 28 > asteroidList.get(j).y && lazerList.get(i).y + 28 < asteroidList.get(j).y + 121)
+                    {
+                        lazerList.remove(i);
+                        asteroidList.remove(j);
+                        break;
+                    }
+                }
+                if(i < lazerList.size())
+                {
+                    if(lazerList.get(i).x > width - 50)
+                    {
+                        lazerList.remove(i);
+                    }
+                }
+            }
+        }
+        if(!asteroidList.isEmpty())
+        {
+            for(int i = 0; i < asteroidList.size(); i++)
+            {
+                if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ur").toString()))
+                {
+                    asteroidList.get(i).x = asteroidList.get(i).x + asteroidSpeed;
+                    asteroidList.get(i).y = asteroidList.get(i).y - asteroidSpeed;
+                }
+                else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ul").toString()))
+                {
+                    asteroidList.get(i).x = asteroidList.get(i).x - asteroidSpeed;
+                    asteroidList.get(i).y = asteroidList.get(i).y - asteroidSpeed;
+                }
+                else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("dr").toString()))
+                {
+                    asteroidList.get(i).x = asteroidList.get(i).x + asteroidSpeed;
+                    asteroidList.get(i).y = asteroidList.get(i).y + asteroidSpeed;
+                }
+                else if(asteroidList.get(i).direction.toString().equals(new StringBuilder("dl").toString()))
+                {
+                    asteroidList.get(i).x = asteroidList.get(i).x - asteroidSpeed;
+                    asteroidList.get(i).y = asteroidList.get(i).y + asteroidSpeed;
+                }
+                if(asteroidList.get(i).x > width - 122)
+                {
+                    asteroidList.get(i).direction.setCharAt(1, 'l');
+                }
+                if(asteroidList.get(i).x < 0)
+                {
+                    asteroidList.get(i).direction.setCharAt(1, 'r');
+                }
+                if(asteroidList.get(i).y > height - 122)
+                {
+                    asteroidList.get(i).direction.setCharAt(0, 'u');
+                }
+                if(asteroidList.get(i).y < 0)
+                {
+                    asteroidList.get(i).direction.setCharAt(0, 'd');
+                }
+            }
+        }
 	}
 }
