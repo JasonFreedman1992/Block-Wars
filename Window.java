@@ -2,14 +2,13 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.JPanel;
 import java.awt.*;
-import java.awt.MouseInfo;
 import java.awt.event.ActionListener;
 import java.awt.event.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.util.*;
 
-public class Window extends JFrame implements KeyListener
+public class Window extends JFrame
 {
     State state = new State();
     Controller control = new Controller();
@@ -23,15 +22,15 @@ public class Window extends JFrame implements KeyListener
     Image bg;
     Graphics g;
 
-    Timer timer = new Timer(10, new ActionListener()
+    public static Timer timer = new Timer(10, new ActionListener()
     {
         public void actionPerformed(ActionEvent e)
         {
-            state.update();
             initPanel();
             add(panel);
             panel.setLocation(0, 0);
             panel.setSize(width, height);
+            state.update();
         }
     });
 
@@ -45,7 +44,7 @@ public class Window extends JFrame implements KeyListener
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         setVisible(true);
-        addKeyListener(this);
+        addKeyListener(control);
         loadImages();
         timer.start();
     }
@@ -67,7 +66,7 @@ public class Window extends JFrame implements KeyListener
     // asteroid = 121 121
     // laser = 87 28
     // ship = 188 x 91
-    public void initPanel()
+    public static void initPanel()
     {
         panel = new JPanel()
         {
@@ -187,86 +186,4 @@ public class Window extends JFrame implements KeyListener
         }
     }
 
-	public void keyPressed(KeyEvent e)
-	{
-		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
-		{
-            control.up = true;
-			state.ship.y = state.ship.y - 25;
-            control.keysPressed++;
-            System.out.println(control.keysPressed);
-		}
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
-		{
-            control.right = true;
-			state.ship.x = state.ship.x + 25;
-            control.keysPressed++;
-            System.out.println(control.keysPressed);
-		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
-		{
-            control.left = true;
-			state.ship.x = state.ship.x - 25;
-            control.keysPressed++;
-            System.out.println(control.keysPressed);
-		}
-		if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
-		{
-            control.down = true;
-			state.ship.y = state.ship.y + 25;
-            control.keysPressed++;
-            System.out.println(control.keysPressed);
-		}
-		if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_NUMPAD0)
-		{ 
-            control.lazerShoot = true;
-			state.lazerList.add(new Lazer(state.ship.x+175, state.ship.y+30));
-            control.keysPressed++;
-            System.out.println(control.keysPressed);
-		}
-/*		if(e.getKeyCode() == KeyEvent.VK_NUMPAD4 || e.getKeyCode() == KeyEvent.VK_F)
-		{
-            control.asteroidSpawn = true;
-			state.asteroidList.add(new Asteroid(r.nextInt((width/2))+(width/2),r.nextInt(height - 125), new StringBuilder(randomString(r.nextInt(4)+1))));
-            control.keysPressed++;
-            System.out.println(control.keysPressed);
-		}*/
-	}
-	public void keyReleased(KeyEvent e)
-	{
-        if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
-        {
-            control.up = false;
-            control.keysPressed--;
-            System.out.println(control.keysPressed);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
-        {
-            control.right = false;
-            control.keysPressed--;
-            System.out.println(control.keysPressed);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
-        {
-            control.left = false;
-            control.keysPressed--;
-            System.out.println(control.keysPressed);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
-        {
-            control.down = false;
-            control.keysPressed--;
-            System.out.println(control.keysPressed);
-        }
-        if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_NUMPAD0)
-        { 
-            control.lazerShoot = false;
-            control.keysPressed--;
-            System.out.println(control.keysPressed);
-        }
-	}
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
 }
