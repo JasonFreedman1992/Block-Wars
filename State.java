@@ -14,26 +14,52 @@ public class State
 	public static boolean right;
 	public static boolean left;
 	public static boolean down;
+    public static boolean upRelease;
+    public static boolean rightRelease;
+    public static boolean leftRelease;
+    public static boolean downRelease;
 	public static boolean lazerShoot;
+    public static int shipSpeed = 5;
+    public int shipRelease = 5;
 
 	public void update()
 	{
 		if(up)
 		{
-			ship.y = ship.y - 5;
+			ship.y = ship.y - shipSpeed;
 		}
 		if(right)
 		{
-			ship.x = ship.x + 5;
+			ship.x = ship.x + shipSpeed;
 		}
 		if(left)
 		{
-			ship.x = ship.x - 5;
+			ship.x = ship.x - shipSpeed;
 		}
 		if(down)
 		{
-			ship.y = ship.y + 5;
+			ship.y = ship.y + shipSpeed;
 		}
+        if(upRelease)
+        {
+            while(shipRelease > 0)
+            {
+                ship.y = ship.y - shipRelease;
+                shipRelease = shipRelease - 1;
+            }
+        }
+        if(rightRelease)
+        {
+
+        }
+        if(leftRelease)
+        {
+
+        }
+        if(downRelease)
+        {
+
+        }
 		if(lazerShoot)
 		{
 			lazerList.add(new Lazer(ship.x + 75, ship.y - 12));

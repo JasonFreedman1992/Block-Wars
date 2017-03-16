@@ -38,18 +38,22 @@ public class Controller implements KeyListener
         if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
         {
             state.up = false;
+            state.upRelease = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
         {
             state.right = false;
+            state.rightRelease = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
         {
             state.left = false;
+            state.leftRelease = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
         {
             state.down = false;
+            state.downRelease = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_NUMPAD0)
         { 

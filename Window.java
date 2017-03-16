@@ -89,6 +89,7 @@ public class Window extends JFrame implements MouseMotionListener
                 //{   
                     g.drawImage(bg, 0, 0, null);
                     g2 = (Graphics2D)g;
+
                     g2.translate(state.ship.x, state.ship.y);
                     g2.rotate(imageAngleRad);
                     g2.translate(-state.ship.x, -state.ship.y);
