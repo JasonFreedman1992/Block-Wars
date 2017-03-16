@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Controller implements KeyListener
 {
+	Random r = new Random();
 	State state = new State();
 	public void keyPressed(KeyEvent e)
 	{
@@ -26,6 +27,10 @@ public class Controller implements KeyListener
 		if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_NUMPAD0)
 		{ 
             state.lazerShoot = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_F)
+		{
+			state.asteroidList.add(new Asteroid(r.nextInt(state.width),r.nextInt(state.height), randomString(r.nextInt(4 + 1))));
 		}
 	}
 	public void keyReleased(KeyEvent e)
@@ -55,4 +60,27 @@ public class Controller implements KeyListener
 	{
 
 	}
+	StringBuilder randomString(int p_int)
+    {
+        if(p_int == 1)
+        {
+            return new StringBuilder("ur");
+        }
+        else if(p_int == 2)
+        {
+            return new StringBuilder("ul");
+        }
+        else if(p_int == 3)
+        {
+            return new StringBuilder("dr");
+        }
+        else if(p_int == 4)
+        {
+            return new StringBuilder("dl");
+        }
+        else
+        {
+            return new StringBuilder("ur");
+        }
+    }
 }

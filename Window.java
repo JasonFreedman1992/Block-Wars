@@ -38,7 +38,7 @@ public class Window extends JFrame implements MouseMotionListener
 
     public void init(int p_width, int p_height)
     {
-        setTitle("Freeza Chess");
+        setTitle("Block Wars");
         setSize(p_width, p_height);
         state.width = p_width;
         state.height = p_height;
@@ -85,8 +85,8 @@ public class Window extends JFrame implements MouseMotionListener
             @Override
             protected void paintComponent(Graphics g)
             {
-                if(state.ship.x < state.width && state.ship.y < state.height && state.ship.x >= 0 && state.ship.y >= 0)
-                {   
+                //if(state.ship.x < state.width && state.ship.y < state.height && state.ship.x >= 0 && state.ship.y >= 0)
+                //{   
                     g.drawImage(bg, 0, 0, null);
                     g2 = (Graphics2D)g;
                     g2.translate(state.ship.x, state.ship.y);
@@ -108,14 +108,13 @@ public class Window extends JFrame implements MouseMotionListener
                             g.drawImage(asteroid, state.asteroidList.get(i).x, state.asteroidList.get(i).y, null);
                         }
                     }
-                }
+                //}
             }
         };
     }
 
     public void mouseMoved(MouseEvent e)
     {
-        System.out.println("detecting mouse movement");
         double dX = e.getX() - state.ship.x;
         double dY = e.getY() - state.ship.y;
         imageAngleRad = Math.atan2(dY, dX);
@@ -127,28 +126,5 @@ public class Window extends JFrame implements MouseMotionListener
     public void mouseDragged(MouseEvent e)
     {
 
-    }
-    StringBuilder randomString(int p_int)
-    {
-        if(p_int == 1)
-        {
-            return new StringBuilder("ur");
-        }
-        else if(p_int == 2)
-        {
-            return new StringBuilder("ul");
-        }
-        else if(p_int == 3)
-        {
-            return new StringBuilder("dr");
-        }
-        else if(p_int == 4)
-        {
-            return new StringBuilder("dl");
-        }
-        else
-        {
-            return new StringBuilder("ur");
-        }
     }
 }
