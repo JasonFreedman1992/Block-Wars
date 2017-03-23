@@ -30,7 +30,7 @@ public class Controller implements KeyListener
 		}
 		if(e.getKeyCode() == KeyEvent.VK_F)
 		{
-			state.asteroidList.add(new Asteroid(r.nextInt(state.width),r.nextInt(state.height), randomString(r.nextInt(4 + 1))));
+            state.spawnAsteroid = true;
 		}
 	}
 	public void keyReleased(KeyEvent e)
@@ -59,32 +59,13 @@ public class Controller implements KeyListener
         { 
             state.lazerShoot = false;
         }
+        if(e.getKeyCode() == KeyEvent.VK_F)
+        {
+            state.spawnAsteroid = false;
+        }
 	}
 	public void keyTyped(KeyEvent e)
 	{
 
 	}
-	StringBuilder randomString(int p_int)
-    {
-        if(p_int == 1)
-        {
-            return new StringBuilder("ur");
-        }
-        else if(p_int == 2)
-        {
-            return new StringBuilder("ul");
-        }
-        else if(p_int == 3)
-        {
-            return new StringBuilder("dr");
-        }
-        else if(p_int == 4)
-        {
-            return new StringBuilder("dl");
-        }
-        else
-        {
-            return new StringBuilder("ur");
-        }
-    }
 }

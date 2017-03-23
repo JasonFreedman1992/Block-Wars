@@ -22,8 +22,6 @@ public class Window extends JFrame implements MouseMotionListener
     Image bg;
     Graphics g;
 
-    public double imageAngleRad = 0;
-
     Timer timer = new Timer(10, new ActionListener()
     {
         public void actionPerformed(ActionEvent e)
@@ -75,6 +73,7 @@ public class Window extends JFrame implements MouseMotionListener
         }
     }
     Graphics2D g2;
+    Graphics2D g3;
     // asteroid = 121 121
     // laser = 87 28
     // ship = 188 x 91
@@ -85,43 +84,42 @@ public class Window extends JFrame implements MouseMotionListener
             @Override
             protected void paintComponent(Graphics g)
             {
-                //if(state.ship.x < state.width && state.ship.y < state.height && state.ship.x >= 0 && state.ship.y >= 0)
-                //{   
-                    g.drawImage(bg, 0, 0, null);
-                    g2 = (Graphics2D)g;
+                g.drawImage(bg, 0, 0, null);
+                g2 = (Graphics2D)g;
+                AffineTransform oldAT = g2.getTransform();
 
-                    g2.translate(state.ship.x, state.ship.y);
-                    g2.rotate(imageAngleRad);
-                    g2.translate(-state.ship.x, -state.ship.y);
-                    g2.drawImage(ship, state.ship.x - 95, state.ship.y - 45, null);
-
-                    if(!state.lazerList.isEmpty())
+                g2.translate(state.ship.x, state.ship.y);
+                g2.rotate(state.imageAngleRad);
+                g2.translate(-state.ship.x, -state.ship.y);
+                g.drawImage(ship, state.ship.x - 95, state.ship.y - 55, null); // x- 95 y - 55 g2 graphics
+                //state.trans = g2.getTransform();
+                g2.setTransform(oldAT);
+                if(!state.lazerList.isEmpty())
+                {
+                    for(int i = 0; i < state.lazerList.size(); i++)
                     {
-                        for(int i = 0; i < state.lazerList.size(); i++)
-                        {
-                            g.drawImage(lazer, state.lazerList.get(i).x, state.lazerList.get(i).y, null);
-                        }
+                        g2.translate(state.lazerList.get(i).x, state.lazerList.get(i).y);
+                        g2.rotate(state.lazerList.get(i).rotate);
+                        g2.translate(-state.lazerList.get(i).x, -state.lazerList.get(i).y);
+                        g.drawImage(lazer, state.lazerList.get(i).x, state.lazerList.get(i).y, null);
+                        g2.setTransform(oldAT);
                     }
-                    if(!state.asteroidList.isEmpty())
+                }
+                if(!state.asteroidList.isEmpty())
+                {
+                    for(int i = 0; i < state.asteroidList.size(); i++)
                     {
-                        for(int i = 0; i < state.asteroidList.size(); i++)
-                        {
-                            g.drawImage(asteroid, state.asteroidList.get(i).x, state.asteroidList.get(i).y, null);
-                        }
+                        g.drawImage(asteroid, state.asteroidList.get(i).x, state.asteroidList.get(i).y, null);
                     }
-                //}
+                }
             }
         };
     }
 
     public void mouseMoved(MouseEvent e)
     {
-        double dX = e.getX() - state.ship.x;
-        double dY = e.getY() - state.ship.y;
-        imageAngleRad = Math.atan2(dY, dX);
-        double degree = Math.toDegrees(imageAngleRad);
-
-        System.out.println(imageAngleRad);
+        state.mouseX = e.getX();
+        state.mouseY = e.getY();
     }
 
     public void mouseDragged(MouseEvent e)
