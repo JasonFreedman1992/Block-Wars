@@ -1,5 +1,3 @@
-import java.awt.geom.AffineTransform;
-
 public class Lazer
 {
 	public int x;
@@ -16,5 +14,6 @@ public class Lazer
 		rotate = p_rotate;
 		vx = p_vx;
 		vy = p_vy;
+
 	}
 }

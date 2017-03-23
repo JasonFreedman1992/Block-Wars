@@ -1,20 +1,16 @@
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
-import java.awt.Point;
 import java.io.*;
 import javax.imageio.ImageIO;
-import java.util.*;
 
 public class Window extends JFrame implements MouseMotionListener
 {
     State state = new State();
     Controller control = new Controller();
-	Random r = new Random();;
     Image ship;
     Image asteroid;
     JPanel panel;
@@ -73,7 +69,6 @@ public class Window extends JFrame implements MouseMotionListener
         }
     }
     Graphics2D g2;
-    Graphics2D g3;
     // asteroid = 121 121
     // laser = 87 28
     // ship = 188 x 91
@@ -91,8 +86,7 @@ public class Window extends JFrame implements MouseMotionListener
                 g2.translate(state.ship.x, state.ship.y);
                 g2.rotate(state.imageAngleRad);
                 g2.translate(-state.ship.x, -state.ship.y);
-                g.drawImage(ship, state.ship.x - 95, state.ship.y - 55, null); // x- 95 y - 55 g2 graphics
-                //state.trans = g2.getTransform();
+                g.drawImage(ship, state.ship.x - 95, state.ship.y - 55, null);
                 g2.setTransform(oldAT);
                 if(!state.lazerList.isEmpty())
                 {

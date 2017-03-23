@@ -28,6 +28,7 @@ public class State
     public double dY;
     public double mouseX;
     public double mouseY;
+    public int releaser = 100;
     public Random r = new Random();
 
     public AffineTransform trans = new AffineTransform();
@@ -58,23 +59,103 @@ public class State
 		}
         if(upRelease)
         {
-            while(shipRelease > 0)
+            ship.y = ship.y - ship.upReleaseV;
+            switch(ship.upReleaser)
             {
-                ship.y = ship.y - shipRelease;
-                shipRelease = shipRelease - 1;
+                case 80:
+                    ship.upReleaseV--;
+                    break;
+                case 60:
+                    ship.upReleaseV--;
+                    break;
+                case 40:
+                    ship.upReleaseV--;
+                    break;
+                case 20:
+                    ship.upReleaseV--;
+                    break;
+                case 0:
+                    upRelease = false;
+                    ship.upReleaseV = 5;
+                    ship.upReleaser = 100;
+                    break;
             }
+            ship.upReleaser--;
         }
         if(rightRelease)
         {
-
+            ship.x = ship.x + ship.rightReleaseV;
+            switch(ship.rightReleaser)
+            {
+                case 80:
+                    ship.rightReleaseV--;
+                    break;
+                case 60:
+                    ship.rightReleaseV--;
+                    break;
+                case 40:
+                    ship.rightReleaseV--;
+                    break;
+                case 20:
+                    ship.rightReleaseV--;
+                    break;
+                case 0:
+                    rightRelease = false;
+                    ship.rightReleaseV = 5;
+                    ship.rightReleaser = 100;
+                    break;
+            }
+            ship.rightReleaser--;
         }
         if(leftRelease)
         {
-
+            ship.x = ship.x - ship.leftReleaseV;
+            switch(ship.leftReleaser)
+            {
+                case 80:
+                    ship.leftReleaseV--;
+                    break;
+                case 60:
+                    ship.leftReleaseV--;
+                    break;
+                case 40:
+                    ship.leftReleaseV--;
+                    break;
+                case 20:
+                    ship.leftReleaseV--;
+                    break;
+                case 0:
+                    leftRelease = false;
+                    ship.leftReleaseV = 5;
+                    ship.leftReleaser = 100;
+                    break;
+            }
+            ship.leftReleaser--;
         }
         if(downRelease)
         {
-
+            ship.y = ship.y + ship.downReleaseV;
+            switch(ship.downReleaser)
+            {
+                case 80:
+                    ship.downReleaseV--;
+                    break;
+                case 60:
+                    ship.downReleaseV--;
+                    break;
+                case 40:
+                    ship.downReleaseV--;
+                    break;
+                case 20:
+                    ship.downReleaseV--;
+                    break;
+                case 0:
+                    downRelease = false;
+                    ship.downReleaseV = 5;
+                    ship.downReleaser = 100;
+                    break;
+            }
+            ship.downReleaser--;
         }
 		if(lazerShoot)
 		{
