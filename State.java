@@ -8,7 +8,6 @@ public class State
 	static ArrayList<Lazer> lazerList = new ArrayList<Lazer>();
 	static ArrayList<Asteroid> asteroidList = new ArrayList<Asteroid>();
 	static int asteroidSpeed = 2;
-	static int lazerSpeed = 10;
 	public static int width;
 	public static int height;
 	public static boolean up;
@@ -30,13 +29,9 @@ public class State
     public double mouseY;
     public int releaser = 100;
     public Random r = new Random();
-
     public AffineTransform trans = new AffineTransform();
-
 	public void update()
 	{
-        //System.out.println(dX);
-        //System.out.println(dY);
         dX = mouseX - ship.x;
         dY = mouseY - ship.y;
         imageAngleRad = Math.atan2(dY, dX);
@@ -215,7 +210,6 @@ public class State
             {
                 lazerList.get(i).x += lazerList.get(i).vx;
                 lazerList.get(i).y += lazerList.get(i).vy;
-                //lazerList.get(i).y += (int) lazerList.get(i).vy;
                 
                 for(int j = 0; j < asteroidList.size(); j++)
                 {
