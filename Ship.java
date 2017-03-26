@@ -13,4 +13,13 @@ public class Ship
 	public static int rightReleaseV = 5;
 	public static int leftReleaseV = 5;
 	public static int downReleaseV = 5;
+
+	public static int upIncreaser = 100;
+	public static int rightIncreaser = 100;
+	public static int leftIncreaser = 100;
+	public static int downIncreaser = 100;
+	public static int upIncreaseV = 0;
+	public static int rightIncreaseV = 0;
+	public static int leftIncreaseV = 0;
+	public static int downIncreaseV = 0;
 }

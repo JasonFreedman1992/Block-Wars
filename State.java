@@ -38,19 +38,97 @@ public class State
         System.out.println(imageAngleRad);
 		if(up)
 		{
-			ship.y = ship.y - shipSpeed;
+			//ship.y = ship.y - shipSpeed;
+            ship.y = ship.y - ship.upIncreaseV;
+            switch(ship.upIncreaser)
+            {
+                case 0:
+                    ship.upIncreaseV++;
+                    break;
+                case 80:
+                    ship.upIncreaseV++;
+                    break;
+                case 60:
+                    ship.upIncreaseV++;
+                    break;
+                case 40:
+                    ship.upIncreaseV++;
+                    break;
+                case 20:
+                    ship.upIncreaseV++;
+                    break;
+            }
+            ship.upIncreaser--;
 		}
 		if(right)
 		{
-			ship.x = ship.x + shipSpeed;
+            ship.x = ship.x + ship.rightIncreaseV;
+            switch(ship.rightIncreaser)
+            {
+                case 0:
+                    ship.rightIncreaseV++;
+                    break;
+                case 80:
+                    ship.rightIncreaseV++;
+                    break;
+                case 60:
+                    ship.rightIncreaseV++;
+                    break;
+                case 40:
+                    ship.rightIncreaseV++;
+                    break;
+                case 20:
+                    ship.rightIncreaseV++;
+
+                    break;
+            }
+            ship.rightIncreaser--;
 		}
 		if(left)
 		{
-			ship.x = ship.x - shipSpeed;
+            ship.x = ship.x - ship.leftIncreaseV;
+            switch(ship.leftIncreaser)
+            {
+                case 0:
+                    ship.leftIncreaseV++;
+                    break;
+                case 80:
+                    ship.leftIncreaseV++;
+                    break;
+                case 60:
+                    ship.leftIncreaseV++;
+                    break;
+                case 40:
+                    ship.leftIncreaseV++;
+                    break;
+                case 20:
+                    ship.leftIncreaseV++;
+                    break;
+            }
+            ship.leftIncreaser--;
 		}
 		if(down)
 		{
-			ship.y = ship.y + shipSpeed;
+            ship.y = ship.y + ship.downIncreaseV;
+            switch(ship.downIncreaser)
+            {
+                case 0:
+                    ship.downIncreaseV++;
+                    break;
+                case 80:
+                    ship.downIncreaseV++;
+                    break;
+                case 60:
+                    ship.downIncreaseV++;
+                    break;
+                case 40:
+                    ship.downIncreaseV++;
+                    break;
+                case 20:
+                    ship.downIncreaseV++;
+                    break;
+            }
+            ship.downIncreaser--;
 		}
         if(upRelease)
         {
