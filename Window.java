@@ -22,9 +22,8 @@ public class Window extends JFrame implements MouseMotionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            initPanel();
-            add(panel);
-            panel.setLocation(0, 0);
+            panel.repaint();
+            //panel.setLocation(0, 0);
             panel.setSize(state.width, state.height);
             state.update();
         }
@@ -51,6 +50,9 @@ public class Window extends JFrame implements MouseMotionListener
         {
 
         }
+
+        initPanel();
+        add(panel);
         timer.start();
     }
 
