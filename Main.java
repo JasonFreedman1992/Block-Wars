@@ -3,6 +3,6 @@ public class Main
 	public static void main(String[] args)
 	{
 		Window win = new Window();
-		win.init(1500,1125);
+		win.init(1200, 900);
 	}
 }

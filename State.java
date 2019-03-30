@@ -20,7 +20,7 @@ public class State
     public static boolean downRelease;
 	public static boolean lazerShoot;
     public static boolean spawnAsteroid;
-    public static int shipSpeed = 5;
+    public static int shipSpeed = 25;
     public int shipRelease = 5;
     public double imageAngleRad = 0;
     public double dX;
@@ -30,206 +30,51 @@ public class State
     public int releaser = 100;
     public Random r = new Random();
     public AffineTransform trans = new AffineTransform();
+
+    public static Camera camera = new Camera();
+
+    public static int map_height;
+    public static int map_width;
+
 	public void update()
 	{
-        dX = mouseX - ship.x;
-        dY = mouseY - ship.y;
+        // dX = mouseX - ship.x;
+        // dY = mouseY - ship.y;
+
+        dX = mouseX - width/2;
+        dY = mouseY - height/2;
+
         imageAngleRad = Math.atan2(dY, dX);
         System.out.println(imageAngleRad);
 		if(up)
 		{
-			//ship.y = ship.y - shipSpeed;
-            ship.y = ship.y - ship.upIncreaseV;
-            switch(ship.upIncreaser)
-            {
-                case 0:
-                    ship.upIncreaseV++;
-                    break;
-                case 80:
-                    ship.upIncreaseV++;
-                    break;
-                case 60:
-                    ship.upIncreaseV++;
-                    break;
-                case 40:
-                    ship.upIncreaseV++;
-                    break;
-                case 20:
-                    ship.upIncreaseV++;
-                    break;
+            //ship.y = ship.y - shipSpeed;
+            if(camera.y+height/2 >= 0){
+                camera.y = camera.y - shipSpeed;
+                ship.y = ship.y - shipSpeed;
             }
-            ship.upIncreaser--;
 		}
 		if(right)
 		{
-            ship.x = ship.x + ship.rightIncreaseV;
-            switch(ship.rightIncreaser)
-            {
-                case 0:
-                    ship.rightIncreaseV++;
-                    break;
-                case 80:
-                    ship.rightIncreaseV++;
-                    break;
-                case 60:
-                    ship.rightIncreaseV++;
-                    break;
-                case 40:
-                    ship.rightIncreaseV++;
-                    break;
-                case 20:
-                    ship.rightIncreaseV++;
-
-                    break;
+            if(camera.x+width/2 <= map_width){
+                ship.x = ship.x + shipSpeed;
+                camera.x = camera.x + shipSpeed;
             }
-            ship.rightIncreaser--;
 		}
 		if(left)
 		{
-            ship.x = ship.x - ship.leftIncreaseV;
-            switch(ship.leftIncreaser)
-            {
-                case 0:
-                    ship.leftIncreaseV++;
-                    break;
-                case 80:
-                    ship.leftIncreaseV++;
-                    break;
-                case 60:
-                    ship.leftIncreaseV++;
-                    break;
-                case 40:
-                    ship.leftIncreaseV++;
-                    break;
-                case 20:
-                    ship.leftIncreaseV++;
-                    break;
+            if(camera.x+width/2 >= 0){
+                ship.x = ship.x - shipSpeed;
+                camera.x = camera.x - shipSpeed;
             }
-            ship.leftIncreaser--;
 		}
 		if(down)
 		{
-            ship.y = ship.y + ship.downIncreaseV;
-            switch(ship.downIncreaser)
-            {
-                case 0:
-                    ship.downIncreaseV++;
-                    break;
-                case 80:
-                    ship.downIncreaseV++;
-                    break;
-                case 60:
-                    ship.downIncreaseV++;
-                    break;
-                case 40:
-                    ship.downIncreaseV++;
-                    break;
-                case 20:
-                    ship.downIncreaseV++;
-                    break;
+            if(camera.y+height/2 <= map_height){
+                ship.y = ship.y + shipSpeed;
+                camera.y = camera.y + shipSpeed;
             }
-            ship.downIncreaser--;
 		}
-        if(upRelease)
-        {
-            ship.y = ship.y - ship.upReleaseV;
-            switch(ship.upReleaser)
-            {
-                case 80:
-                    ship.upReleaseV--;
-                    break;
-                case 60:
-                    ship.upReleaseV--;
-                    break;
-                case 40:
-                    ship.upReleaseV--;
-                    break;
-                case 20:
-                    ship.upReleaseV--;
-                    break;
-                case 0:
-                    upRelease = false;
-                    ship.upReleaseV = 5;
-                    ship.upReleaser = 100;
-                    break;
-            }
-            ship.upReleaser--;
-        }
-        if(rightRelease)
-        {
-            ship.x = ship.x + ship.rightReleaseV;
-            switch(ship.rightReleaser)
-            {
-                case 80:
-                    ship.rightReleaseV--;
-                    break;
-                case 60:
-                    ship.rightReleaseV--;
-                    break;
-                case 40:
-                    ship.rightReleaseV--;
-                    break;
-                case 20:
-                    ship.rightReleaseV--;
-                    break;
-                case 0:
-                    rightRelease = false;
-                    ship.rightReleaseV = 5;
-                    ship.rightReleaser = 100;
-                    break;
-            }
-            ship.rightReleaser--;
-        }
-        if(leftRelease)
-        {
-            ship.x = ship.x - ship.leftReleaseV;
-            switch(ship.leftReleaser)
-            {
-                case 80:
-                    ship.leftReleaseV--;
-                    break;
-                case 60:
-                    ship.leftReleaseV--;
-                    break;
-                case 40:
-                    ship.leftReleaseV--;
-                    break;
-                case 20:
-                    ship.leftReleaseV--;
-                    break;
-                case 0:
-                    leftRelease = false;
-                    ship.leftReleaseV = 5;
-                    ship.leftReleaser = 100;
-                    break;
-            }
-            ship.leftReleaser--;
-        }
-        if(downRelease)
-        {
-            ship.y = ship.y + ship.downReleaseV;
-            switch(ship.downReleaser)
-            {
-                case 80:
-                    ship.downReleaseV--;
-                    break;
-                case 60:
-                    ship.downReleaseV--;
-                    break;
-                case 40:
-                    ship.downReleaseV--;
-                    break;
-                case 20:
-                    ship.downReleaseV--;
-                    break;
-                case 0:
-                    downRelease = false;
-                    ship.downReleaseV = 5;
-                    ship.downReleaser = 100;
-                    break;
-            }
-            ship.downReleaser--;
-        }
 		if(lazerShoot)
 		{
             double angle = imageAngleRad/Math.PI;
@@ -276,11 +121,11 @@ public class State
                     vx = -20;
                 }
             }
-			lazerList.add(new Lazer(ship.x + 50, ship.y + 50, imageAngleRad, vx, vy));
+			lazerList.add(new Lazer(ship.x, ship.y, imageAngleRad, vx, vy));
 		}
         if(spawnAsteroid)
         {
-            asteroidList.add(new Asteroid(r.nextInt(width),r.nextInt(height), randomString(r.nextInt(4 + 1))));
+            asteroidList.add(new Asteroid(r.nextInt(map_width),r.nextInt(map_height), randomString(r.nextInt(4 + 1))));
         }
         if(!lazerList.isEmpty())
         {
@@ -297,6 +142,13 @@ public class State
                         asteroidList.remove(j);
                         break;
                     }
+                }
+            }
+        }
+        if(!lazerList.isEmpty()){
+            for(int i = 0; i < lazerList.size(); i++){
+                if(lazerList.get(i).x < 0 || lazerList.get(i).y < 0 || lazerList.get(i).y > map_height || lazerList.get(i).x > map_width){
+                    lazerList.remove(i);
                 }
             }
         }
@@ -324,7 +176,7 @@ public class State
                     asteroidList.get(i).x = asteroidList.get(i).x - asteroidSpeed;
                     asteroidList.get(i).y = asteroidList.get(i).y + asteroidSpeed;
                 }
-                if(asteroidList.get(i).x > width - 122)
+                if(asteroidList.get(i).x > map_width - 61)
                 {
                     asteroidList.get(i).direction.setCharAt(1, 'l');
                 }
@@ -332,7 +184,7 @@ public class State
                 {
                     asteroidList.get(i).direction.setCharAt(1, 'r');
                 }
-                if(asteroidList.get(i).y > height - 122)
+                if(asteroidList.get(i).y > map_height - 61)
                 {
                     asteroidList.get(i).direction.setCharAt(0, 'u');
                 }

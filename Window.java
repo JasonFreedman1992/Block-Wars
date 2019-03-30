@@ -22,10 +22,10 @@ public class Window extends JFrame implements MouseMotionListener
     {
         public void actionPerformed(ActionEvent e)
         {
-            panel.repaint();
             //panel.setLocation(0, 0);
             panel.setSize(state.width, state.height);
             state.update();
+            panel.repaint();
         }
     });
 
@@ -35,6 +35,12 @@ public class Window extends JFrame implements MouseMotionListener
         setSize(p_width, p_height);
         state.width = p_width;
         state.height = p_height;
+        state.map_width = p_width * 10;
+        state.map_height = p_height * 10;
+        state.ship.x = p_width/2;
+        state.ship.y = p_height/2;
+        state.camera.x = 0;
+        state.camera.y = 0;
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
@@ -85,29 +91,59 @@ public class Window extends JFrame implements MouseMotionListener
                 g2 = (Graphics2D)g;
                 AffineTransform oldAT = g2.getTransform();
 
-                g2.translate(state.ship.x, state.ship.y);
+                g2.translate(state.ship.x - state.camera.x, state.ship.y - state.camera.y);
                 g2.rotate(state.imageAngleRad);
-                g2.translate(-state.ship.x, -state.ship.y);
-                g.drawImage(ship, state.ship.x - 95, state.ship.y - 55, null);
+                g2.translate(-state.ship.x + state.camera.x, -state.ship.y + state.camera.y);
+                g.drawImage(ship, state.ship.x - state.camera.x - 51, state.ship.y - state.camera.y - 24, null);
                 g2.setTransform(oldAT);
+                g.setColor(new Color(0f, 0f, 0f, .8f));
+                g.fillRect(50, 700, state.width/6, state.height/6);
+
+                g.setColor(Color.BLUE);
+                g.fillRect(50 + state.ship.x/60, 700+state.ship.y/60, 4, 4);
+
+                g.setColor(Color.WHITE);
+                g2.setStroke(new BasicStroke(5));
+                // top border
+                g.drawLine(0-state.camera.x, 0-state.camera.y, state.map_width-state.camera.x, 0-state.camera.y);
+                // left border
+                g.drawLine(0-state.camera.x, 0-state.camera.y, 0-state.camera.x, state.map_height-state.camera.y);
+                // bottom border
+                g.drawLine(0-state.camera.x, 9000-state.camera.y, 12000-state.camera.x, 9000-state.camera.y);
+                // top border
+                g.drawLine(12000-state.camera.x, 0-state.camera.y, 12000-state.camera.x, 9000-state.camera.y);
+
                 if(!state.lazerList.isEmpty())
                 {
                     for(int i = 0; i < state.lazerList.size(); i++)
                     {
-                        g2.translate(state.lazerList.get(i).x, state.lazerList.get(i).y);
-                        g2.rotate(state.lazerList.get(i).rotate);
-                        g2.translate(-state.lazerList.get(i).x, -state.lazerList.get(i).y);
-                        g.drawImage(lazer, state.lazerList.get(i).x, state.lazerList.get(i).y, null);
-                        g2.setTransform(oldAT);
+                        if(state.lazerList.get(i).x - state.camera.x > 0 && state.lazerList.get(i).x - state.camera.x < state.width &&
+                        state.lazerList.get(i).y - state.camera.y > 0 && state.lazerList.get(i).y - state.camera.y < state.height){
+                            if(i < state.lazerList.size()){
+                                g2.translate(state.lazerList.get(i).x - state.camera.x, state.lazerList.get(i).y - state.camera.y);
+                                g2.rotate(state.lazerList.get(i).rotate);
+                                g2.translate(-state.lazerList.get(i).x + state.camera.x, -state.lazerList.get(i).y + state.camera.y);
+                                g.drawImage(lazer, state.lazerList.get(i).x - state.camera.x, state.lazerList.get(i).y - state.camera.y, null);
+                                g2.setTransform(oldAT);
+                            }
+                        }
+                        g.setColor(Color.RED);
+                        g.fillRect(50 + state.lazerList.get(i).x/60, 700+state.lazerList.get(i).y/60, 1, 1);
                     }
                 }
                 if(!state.asteroidList.isEmpty())
                 {
                     for(int i = 0; i < state.asteroidList.size(); i++)
                     {
-                        g.drawImage(asteroid, state.asteroidList.get(i).x, state.asteroidList.get(i).y, null);
+                        if(state.asteroidList.get(i).x - state.camera.x + 61 > 0 && state.asteroidList.get(i).x - state.camera.x < state.width &&
+                        state.asteroidList.get(i).y - state.camera.y + 61 > 0 && state.asteroidList.get(i).y - state.camera.y < state.height){
+                            g.drawImage(asteroid, state.asteroidList.get(i).x - state.camera.x, state.asteroidList.get(i).y - state.camera.y, null);
+                        }
+                        g.setColor(Color.LIGHT_GRAY);
+                        g.fillRect(50 + state.asteroidList.get(i).x/60, 700+state.asteroidList.get(i).y/60, 2, 2);
                     }
                 }
+                
             }
         };
     }
