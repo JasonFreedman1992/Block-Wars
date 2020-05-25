@@ -1,4 +1,12 @@
+package com.blockwars;
+
 import java.util.*;
+
+import com.blockwars.Objects.Asteroid;
+import com.blockwars.Objects.Lazer;
+import com.blockwars.Objects.Ship;
+import com.blockwars.Objects.Oracle;
+
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 
@@ -6,10 +14,15 @@ public class State
 {
 	public static Ship ship = new Ship();
 	static ArrayList<Lazer> lazerList = new ArrayList<Lazer>();
-	static ArrayList<Asteroid> asteroidList = new ArrayList<Asteroid>();
+    static ArrayList<Asteroid> asteroidList = new ArrayList<Asteroid>();
+    static ArrayList<Oracle> oracleList = new ArrayList<Oracle>();
 	static int asteroidSpeed = 2;
 	public static int width;
-	public static int height;
+    public static int height;
+    
+    public static boolean selectingUnits;
+    public static Oracle selectedOracle;
+
 	public static boolean up;
 	public static boolean right;
 	public static boolean left;
@@ -20,6 +33,8 @@ public class State
     public static boolean downRelease;
 	public static boolean lazerShoot;
     public static boolean spawnAsteroid;
+    public static boolean spawnOracle;
+
     public static int shipSpeed = 25;
     public int shipRelease = 5;
     public double imageAngleRad = 0;
@@ -33,11 +48,14 @@ public class State
 
     public static Camera camera = new Camera();
 
-    public static int map_height;
-    public static int map_width;
+    public static int map_height; // 9000
+    public static int map_width; // 12000
 
 	public void update()
 	{
+        // System.out.println(ship.x);
+        // System.out.println(ship.y);
+
         // dX = mouseX - ship.x;
         // dY = mouseY - ship.y;
 
@@ -45,10 +63,12 @@ public class State
         dY = mouseY - height/2;
 
         imageAngleRad = Math.atan2(dY, dX);
-        System.out.println(imageAngleRad);
+
+        // current angle of ship to cursor in radians
+        //System.out.println(imageAngleRad);
+        
 		if(up)
 		{
-            //ship.y = ship.y - shipSpeed;
             if(camera.y+height/2 >= 0){
                 camera.y = camera.y - shipSpeed;
                 ship.y = ship.y - shipSpeed;
@@ -74,7 +94,7 @@ public class State
                 ship.y = ship.y + shipSpeed;
                 camera.y = camera.y + shipSpeed;
             }
-		}
+        }
 		if(lazerShoot)
 		{
             double angle = imageAngleRad/Math.PI;
@@ -122,13 +142,18 @@ public class State
                 }
             }
 			lazerList.add(new Lazer(ship.x, ship.y, imageAngleRad, vx, vy));
-		}
+        }
+        if(spawnOracle){
+            oracleList.add(new Oracle(r.nextInt(map_width), r.nextInt(map_height)));
+        }
         if(spawnAsteroid)
         {
+            // spawn asteroid with random position on map and random direction
             asteroidList.add(new Asteroid(r.nextInt(map_width),r.nextInt(map_height), randomString(r.nextInt(4 + 1))));
         }
         if(!lazerList.isEmpty())
         {
+            // if laser is intersecting with asteroid, remove both laser and asteroid
             for(int i = 0; i < lazerList.size(); i++)
             {
                 lazerList.get(i).x += lazerList.get(i).vx;
@@ -137,7 +162,7 @@ public class State
                 for(int j = 0; j < asteroidList.size(); j++)
                 {
                     if(lazerList.get(i).x + 87 > asteroidList.get(j).x && lazerList.get(i).x + 87 < asteroidList.get(j).x + 121 && lazerList.get(i).y + 28 > asteroidList.get(j).y && lazerList.get(i).y + 28 < asteroidList.get(j).y + 121)
-                    {
+                    { 
                         lazerList.remove(i);
                         asteroidList.remove(j);
                         break;
@@ -146,6 +171,7 @@ public class State
             }
         }
         if(!lazerList.isEmpty()){
+            // if laser hits the boundaries of the map
             for(int i = 0; i < lazerList.size(); i++){
                 if(lazerList.get(i).x < 0 || lazerList.get(i).y < 0 || lazerList.get(i).y > map_height || lazerList.get(i).x > map_width){
                     lazerList.remove(i);
@@ -156,6 +182,7 @@ public class State
         {
             for(int i = 0; i < asteroidList.size(); i++)
             {
+                // asteroid movement
                 if(asteroidList.get(i).direction.toString().equals(new StringBuilder("ur").toString()))
                 {
                     asteroidList.get(i).x = asteroidList.get(i).x + asteroidSpeed;
@@ -176,6 +203,7 @@ public class State
                     asteroidList.get(i).x = asteroidList.get(i).x - asteroidSpeed;
                     asteroidList.get(i).y = asteroidList.get(i).y + asteroidSpeed;
                 }
+                // if asteroid hits boundary, change direction
                 if(asteroidList.get(i).x > map_width - 61)
                 {
                     asteroidList.get(i).direction.setCharAt(1, 'l');
@@ -194,7 +222,14 @@ public class State
                 }
             }
         }
-	}
+        if(!oracleList.isEmpty())
+        {   
+            for(int i = 0; i < oracleList.size(); i++){
+
+            }
+        }
+    }
+
     StringBuilder randomString(int p_int)
     {
         if(p_int == 1)

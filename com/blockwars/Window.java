@@ -1,3 +1,5 @@
+package com.blockwars;
+
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -7,7 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.io.*;
 import javax.imageio.ImageIO;
 
-public class Window extends JFrame implements MouseMotionListener
+public class Window extends JFrame implements MouseMotionListener, MouseListener
 {
     State state = new State();
     Controller control = new Controller();
@@ -16,6 +18,7 @@ public class Window extends JFrame implements MouseMotionListener
     JPanel panel;
     Image lazer;
     Image bg;
+    Image oracle;
     Graphics g;
 
     Timer timer = new Timer(10, new ActionListener()
@@ -23,6 +26,7 @@ public class Window extends JFrame implements MouseMotionListener
         public void actionPerformed(ActionEvent e)
         {
             //panel.setLocation(0, 0);
+            // System.out.println("Working Directory = " + System.getProperty("user.dir"));
             panel.setSize(state.width, state.height);
             state.update();
             panel.repaint();
@@ -47,10 +51,11 @@ public class Window extends JFrame implements MouseMotionListener
         setVisible(true);
         addKeyListener(control);
         addMouseMotionListener(this);
+        addMouseListener(this);
         loadImages();
         try
         {
-            setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("mycursor1.png").getImage(),new Point(0,0),"custom cursor"));
+            setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon(Window.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "mycursor1.png").getImage(),new Point(0,0),"custom cursor"));
         }
         catch(Exception e)
         {
@@ -66,10 +71,15 @@ public class Window extends JFrame implements MouseMotionListener
     {
         try
         {
-            ship = ImageIO.read(new File("redship.png"));
-            bg = ImageIO.read(new File("space.jpg"));
-            lazer = ImageIO.read(new File("lazer.png"));
-            asteroid = ImageIO.read(new File("asteroid.png"));
+            // /C:/Users/jason/AppData/Roaming/Code/User/workspaceStorage/0e3a99f30f41a9d2ea33c23a821ed5fc/redhat.java/jdt_ws/Block-Wars_d3c9a091/bin/ + com/blockwars/
+            String working_directory = Window.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "com/blockwars/";
+
+            System.out.println(working_directory);
+            ship = ImageIO.read(new File(working_directory + "redship.png"));
+            bg = ImageIO.read(new File(working_directory + "space.jpg"));
+            lazer = ImageIO.read(new File(working_directory + "lazer.png"));
+            asteroid = ImageIO.read(new File(working_directory + "asteroid.png"));
+            oracle = ImageIO.read(new File(working_directory + "oracle.png"));
         }
         catch(IOException ex)
         {
@@ -127,6 +137,7 @@ public class Window extends JFrame implements MouseMotionListener
                                 g2.setTransform(oldAT);
                             }
                         }
+                        // draw on map
                         g.setColor(Color.RED);
                         g.fillRect(50 + state.lazerList.get(i).x/60, 700+state.lazerList.get(i).y/60, 1, 1);
                     }
@@ -139,11 +150,20 @@ public class Window extends JFrame implements MouseMotionListener
                         state.asteroidList.get(i).y - state.camera.y + 61 > 0 && state.asteroidList.get(i).y - state.camera.y < state.height){
                             g.drawImage(asteroid, state.asteroidList.get(i).x - state.camera.x, state.asteroidList.get(i).y - state.camera.y, null);
                         }
+                        // draw on map
                         g.setColor(Color.LIGHT_GRAY);
                         g.fillRect(50 + state.asteroidList.get(i).x/60, 700+state.asteroidList.get(i).y/60, 2, 2);
                     }
                 }
-                
+                if(!state.oracleList.isEmpty())
+                {
+                    for(int i = 0; i < state.oracleList.size(); i++){
+                        g.drawImage(oracle, state.oracleList.get(i).x - state.camera.x, state.oracleList.get(i).y - state.camera.y, null);
+                    }
+                }
+                if(state.selectingUnits){
+                    System.out.println("Selecting");
+                }
             }
         };
     }
@@ -152,10 +172,37 @@ public class Window extends JFrame implements MouseMotionListener
     {
         state.mouseX = e.getX();
         state.mouseY = e.getY();
+        // System.out.println(Integer.toString(e.getX())  + " " + Integer.toString(e.getY()));
     }
 
     public void mouseDragged(MouseEvent e)
     {
 
+        // System.out.println(Integer.toString(e.getX())  + " " + Integer.toString(e.getY()));
+        // if(e.getButton() == 1){
+
+        // }
     }
+
+    public void mousePressed(MouseEvent e) {
+        state.selectingUnits = true;
+        System.out.println("Start Drag");
+    }
+ 
+    public void mouseReleased(MouseEvent e) {
+        state.selectingUnits = false;
+        System.out.println("End Drag");
+    }
+ 
+     public void mouseEntered(MouseEvent e) {
+
+     }
+ 
+     public void mouseExited(MouseEvent e) {
+
+     }
+ 
+     public void mouseClicked(MouseEvent e) {
+
+     }
 }

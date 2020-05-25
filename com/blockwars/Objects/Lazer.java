@@ -1,3 +1,5 @@
+package com.blockwars.Objects;
+
 public class Lazer
 {
 	public int x;

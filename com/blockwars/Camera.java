@@ -1,3 +1,5 @@
+package com.blockwars;
+
 public class Camera
 {
 	public int x;

@@ -1,3 +1,5 @@
+package com.blockwars.Objects;
+
 public class Ship
 {
 	public static int x;

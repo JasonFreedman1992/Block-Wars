@@ -1,3 +1,5 @@
+package com.blockwars;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -32,6 +34,12 @@ public class Controller implements KeyListener
 		{
             state.spawnAsteroid = true;
 		}
+		if(e.getKeyCode() == KeyEvent.VK_R)
+		{
+			state.spawnOracle = true;
+			// System.out.println("R");
+            // state.spawnAsteroid = true;
+		}
 	}
 	public void keyReleased(KeyEvent e)
 	{
@@ -62,6 +70,11 @@ public class Controller implements KeyListener
         if(e.getKeyCode() == KeyEvent.VK_F)
         {
             state.spawnAsteroid = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_R)
+        {
+			state.spawnOracle = false;
+            // state.spawnAsteroid = false;
         }
 	}
 	public void keyTyped(KeyEvent e)
